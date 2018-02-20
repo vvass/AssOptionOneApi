@@ -1,23 +1,33 @@
 package controllers
 
-import javax.inject._
+import javax.inject.Inject
+
+import scala.concurrent.Future
 import play.api.mvc._
+import play.api.libs.ws._
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+import play.api.libs.json._
 
-/**
- * This controller creates an `Action` to handle HTTP requests to the
- * application's home page.
- */
-@Singleton
-class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+case class Alert(name: String, value: Int, date: String)
 
-  /**
-   * Create an Action to render an HTML page with a welcome message.
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/`.
-   */
-  def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+class HomeController @Inject() (ws: WSClient) extends InjectedController {
+  
+  def index = Action.async {
+  
+    ws.url("https://sample-api.pascalmetrics.com/api/events")
+      .addHttpHeaders("Accept" -> "application/json")
+      .addQueryStringParameters("api-key" -> "nu11p0int3r!")
+      .get().map { response =>
+      
+        
+      
+        Ok(views.html.index(response.body))
+      }
+    
   }
-
+  
+  
+  
+  
 }
