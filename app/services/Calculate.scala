@@ -28,12 +28,14 @@ class Calculate {
       }
     }
     
-    val names = listAlerts.map(
+    val orderedListAlerts = listAlerts.sortWith(_.date < _.date)
+    
+    val names = orderedListAlerts.map(
       alert => alert.name
     ).distinct map ( x =>
       Sums(
         x,
-        AlertsRespository.addUpValues(listAlerts,x),
+        AlertsRespository.addUpValues(orderedListAlerts,x),
         AlertsRespository.isOverThreshold()
       )
     )

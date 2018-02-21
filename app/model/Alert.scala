@@ -3,11 +3,15 @@ package model
 import java.text.{DateFormat, SimpleDateFormat}
 import java.time.{Instant, LocalDate, ZoneOffset}
 
+import scala.collection.mutable.ListBuffer
+
 case class Alerts(name: String, value: Int, date: Long)
 
 object AlertsRespository {
   
   var sum = 0
+  var list = new ListBuffer[Any]()
+  
   
   def findName(a:List[Alerts],str:String):Boolean = a.find(x => x.name == str) match {
     case Some(_) => true
@@ -20,6 +24,16 @@ object AlertsRespository {
     sum
   }
   
+//  def getListOfDates(a:List[Alerts],str: String) = {
+//    list = new ListBuffer[Any]()
+//
+//    a.filter(l => l.name == str).map(r => list += periodReachThreshold(r))
+//    println(list)
+//
+//    List()
+//
+//  }
+  
   def isOverThreshold():Boolean = {
     if(sum > 2000) true else false
   }
@@ -28,6 +42,12 @@ object AlertsRespository {
 //    if (((System.currentTimeMillis) - r.date) < 86400)  r.value else 0
     //2016/10/31 10:10:10
     if (((1477923010745L) - r.date) < 86400)  r.value else 0
+  }
+  
+  def periodReachThreshold(r:Alerts) = {
+//    if (((System.currentTimeMillis) - r.date) < 86400)  true else false
+    //2016/10/31 10:10:10
+    if (((1477923010745L) - r.date) < 86400)  r.date else None
   }
   
   def formatUTC (date: Long): String = {
