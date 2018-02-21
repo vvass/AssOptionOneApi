@@ -1,12 +1,12 @@
 package services
 
 
+import model.Alerts
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 class Calculate {
-  import model.{Alert,AlertsRespository}
-  import model.Sums
+  import model.{Alert,AlertsRepository}
   
   def convert (response: String) = {
   
@@ -30,21 +30,30 @@ class Calculate {
     
     val orderedListAlerts = listAlerts.sortWith(_.date < _.date)
     
-    val names = orderedListAlerts.map(
-      alert => alert.name
-    ).distinct map ( x =>
-      Sums(
-        x,
-        AlertsRespository.addUpValues(orderedListAlerts,x),
-        AlertsRespository.isOverThreshold()
+//    val names = orderedListAlerts.map(
+//      alert => alert.name
+//    ).distinct map ( x =>
+//      Sums(
+//        x,
+//        AlertRespository.addUpValues(orderedListAlerts,x),
+//        AlertRespository.isOverThreshold()
+//      )
+//    )
+    
+    val tmp = Alerts(
+        AlertsRepository.getStartDate(orderedListAlerts),
+        AlertsRepository.getEndDate(orderedListAlerts),
+        AlertsRepository.getListOfAlerts(orderedListAlerts)
       )
-    )
     
-    implicit val sums = Json.format[Sums]
-    val sumsList = names
-    
-    println(Json.toJson(sumsList))
+    println(tmp)
+//    implicit val sums = Json.format[Alerts]
+//    val sumsList = tmp
+//
+//    println(Json.toJson(sumsList))
 
+    
+    
   
     
   }
