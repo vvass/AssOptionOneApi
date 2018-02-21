@@ -1,15 +1,12 @@
 package services
 
-import java.time.{Instant, ZoneOffset}
 
-import model.Alerts
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import java.text.{DateFormat, SimpleDateFormat}
-import java.util.Date
 
-class ConvertToUTC {
-  import model.Alerts
+class Calculate {
+  import model.{Alerts,AlertsRespository}
+  import model.Sums
   
   def convert (response: String) = {
   
@@ -30,9 +27,23 @@ class ConvertToUTC {
         List()
       }
     }
-  
-    listAlerts.map( alert =>
-      println(Instant.ofEpochMilli(alert.date).atOffset(ZoneOffset.UTC).toString())
+    
+    val names = listAlerts.map(
+      alert => alert.name
+    ).distinct map ( x =>
+      Sums(
+        x,
+        AlertsRespository.addUpValues(listAlerts,x),
+        AlertsRespository.isOverThreshold()
+      )
     )
+    
+    implicit val sums = Json.format[Sums]
+    val sumsList = names
+    
+    println(Json.toJson(sumsList))
+
+  
+    
   }
 }
