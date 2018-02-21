@@ -2,9 +2,13 @@ package model
 
 import java.text.SimpleDateFormat
 
-case class Alerts(start: String, end: String, sum: List[ThresholdStatus])
+import play.api.libs.json.{JsValue, Json}
+
+case class Alerts(start: String, end: String, alerts: JsValue)
 
 object AlertsRepository {
+  
+  implicit
   
   def getStartDate(ol:List[Alert]) = {
     formatUTC(ol(0).date)
@@ -24,10 +28,12 @@ object AlertsRepository {
       ThresholdStatus(
         x,
         addup(rangeOfDates,x),
-        findTimestamp(rangeOfDates,x)
+        findTimestamp(rangeOfDates,x).toString
       )
     )
-    sums
+  
+    implicit val alertsWrites = Json.format[ThresholdStatus]
+    Json.toJson(sums)
   }
   
   def formatUTC (date: Long): String = {

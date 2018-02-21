@@ -20,7 +20,8 @@ class HomeController @Inject() (ws: WSClient) extends InjectedController {
       .get().map { response =>
       
         val tmp = new Calculate().convert(response.body.toString)
-        Ok(views.html.index("Ok"))
+        
+        Ok(views.html.index(tmp.toString()))
         
         
       }
