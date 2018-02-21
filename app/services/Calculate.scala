@@ -5,20 +5,20 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 class Calculate {
-  import model.{Alerts,AlertsRespository}
+  import model.{Alert,AlertsRespository}
   import model.Sums
   
   def convert (response: String) = {
   
-    implicit val alertReads: Reads[Alerts] = (
+    implicit val alertReads: Reads[Alert] = (
       (__ \ "name").read[String] and
         (__ \ "value").read[Int] and
         (__ \ "date").read[Long]
-      ) ( Alerts.apply _ )
+      ) ( Alert.apply _ )
   
     val json: JsValue = Json.parse(response)
   
-    val validatedAlerts = json.validate[List[Alerts]]
+    val validatedAlerts = json.validate[List[Alert]]
   
     val listAlerts = validatedAlerts match {
       case JsSuccess(list, _) => list

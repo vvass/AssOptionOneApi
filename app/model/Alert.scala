@@ -5,7 +5,7 @@ import java.time.{Instant, LocalDate, ZoneOffset}
 
 import scala.collection.mutable.ListBuffer
 
-case class Alerts(name: String, value: Int, date: Long)
+case class Alert(name: String, value: Int, date: Long)
 
 object AlertsRespository {
   
@@ -13,12 +13,12 @@ object AlertsRespository {
   var list = new ListBuffer[Any]()
   
   
-  def findName(a:List[Alerts],str:String):Boolean = a.find(x => x.name == str) match {
+  def findName(a:List[Alert],str:String):Boolean = a.find(x => x.name == str) match {
     case Some(_) => true
     case _ => false
   }
   
-  def addUpValues(a:List[Alerts],str:String) = {
+  def addUpValues(a:List[Alert],str:String) = {
     sum = 0
     a.filter(l => l.name == str).map(r => sum += isIn24HourPeriodValue(r))
     sum
@@ -38,13 +38,13 @@ object AlertsRespository {
     if(sum > 2000) true else false
   }
   
-  def isIn24HourPeriodValue(r:Alerts) = {
+  def isIn24HourPeriodValue(r:Alert) = {
 //    if (((System.currentTimeMillis) - r.date) < 86400)  r.value else 0
     //2016/10/31 10:10:10
     if (((1477923010745L) - r.date) < 86400)  r.value else 0
   }
   
-  def periodReachThreshold(r:Alerts) = {
+  def periodReachThreshold(r:Alert) = {
 //    if (((System.currentTimeMillis) - r.date) < 86400)  true else false
     //2016/10/31 10:10:10
     if (((1477923010745L) - r.date) < 86400)  r.date else None
