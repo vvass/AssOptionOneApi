@@ -4,6 +4,6 @@ if (window.console) {
   document.getElementById("myButton").addEventListener("click", clickHandler);
 
   function clickHandler(){
-    window.location.href = "http://165.227.94.251:9000/alerts"
+    window.location.href = "http://165.227.94.251:8000/alerts"
   }
 }
