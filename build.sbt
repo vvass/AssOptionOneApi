@@ -15,6 +15,8 @@ libraryDependencies ++= Seq( jdbc , ehcache , ws , specs2 % Test , guice )
 libraryDependencies += filters
 libraryDependencies += "org.webjars" % "bootstrap" % "3.3.6"
 
+PlayKeys.devSettings := Seq("play.server.http.port" -> "8000")
+
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
       
