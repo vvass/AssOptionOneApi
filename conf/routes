@@ -4,6 +4,7 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /alerts                           controllers.HomeController.alerts
-
+GET     /alerts                   controllers.HomeController.alerts
+GET     /index                    controllers.HomeController.button
+GET     /assets/*file             controllers.Assets.at(path="/public", file)
       

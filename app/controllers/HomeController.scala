@@ -12,6 +12,10 @@ import services.Calculate
 
 class HomeController @Inject() (ws: WSClient) extends InjectedController {
   
+  def button = Action {
+    Ok(views.html.button("Welcome, Please click the button"))
+  }
+  
   def alerts = Action.async {
   
     ws.url("https://sample-api.pascalmetrics.com/api/events")
